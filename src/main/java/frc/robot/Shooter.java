@@ -26,6 +26,14 @@ public class Shooter {
         flywheel.debug();
     }
 
+    public void hoodDown() {
+        flywheel.hoodDown();
+    }
+
+    public void hoodUp() {
+        flywheel.hoodUp();
+    }
+
     public void init() {
         mag.init();
         intake.init();

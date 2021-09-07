@@ -50,14 +50,17 @@ public class DriveTrain extends DifferentialDrive {
 		Changed neos to public for testing, change back soon
 	*/
 	private static final CANSparkMax
-			frontL = new CANSparkMax(Constants.DRIVE_FL, CANSparkMax.MotorType.kBrushless),
-			frontR = new CANSparkMax(Constants.DRIVE_FR, CANSparkMax.MotorType.kBrushless),
-			middleL = new CANSparkMax(Constants.DRIVE_ML, CANSparkMax.MotorType.kBrushless),
-			middleR = new CANSparkMax(Constants.DRIVE_MR, CANSparkMax.MotorType.kBrushless),
-			backL = new CANSparkMax(Constants.DRIVE_BL, CANSparkMax.MotorType.kBrushless),
-			backR = new CANSparkMax(Constants.DRIVE_BR, CANSparkMax.MotorType.kBrushless); 
-	private static final SpeedControllerGroup left = new SpeedControllerGroup(frontL, middleL, backL);
-	private static final SpeedControllerGroup right = new SpeedControllerGroup(frontR, middleR, backR); 
+	//frontL = new CANSparkMax(Constants.DRIVE_FL, CANSparkMax.MotorType.kBrushless),
+	//frontR = new CANSparkMax(Constants.DRIVE_FR, CANSparkMax.MotorType.kBrushless),
+	middleL = new CANSparkMax(Constants.DRIVE_ML, CANSparkMax.MotorType.kBrushless),
+	middleR = new CANSparkMax(Constants.DRIVE_MR, CANSparkMax.MotorType.kBrushless),
+	backL = new CANSparkMax(Constants.DRIVE_BL, CANSparkMax.MotorType.kBrushless),
+	backR = new CANSparkMax(Constants.DRIVE_BR, CANSparkMax.MotorType.kBrushless); 
+	//private static final SpeedControllerGroup left = new SpeedControllerGroup(frontL, middleL, backL);
+	//private static final SpeedControllerGroup right = new SpeedControllerGroup(frontR, middleR, backR); 
+	private static final SpeedControllerGroup left = new SpeedControllerGroup(middleL, backL);
+	private static final SpeedControllerGroup right = new SpeedControllerGroup(middleR, backR); 
+	
 	
 	private double P = 0.01, I = 0, D = 0; // P was .009
 	private final double MAX_OUTPUT = 0.8, MIN_OUTPUT = 0.3;
@@ -86,8 +89,8 @@ public class DriveTrain extends DifferentialDrive {
 		initMotors();
 		heading = new Heading();
 		vis =  new Vision();
-		encoderL = new CANEncoder(frontL);
-		encoderR =  new CANEncoder(frontR);
+		encoderL = new CANEncoder(middleL);
+		encoderR =  new CANEncoder(middleR);
 		encoderL.setPositionConversionFactor(this.HIGH_DISTANCE_CONVERSION_FACTOR);
 		encoderR.setPositionConversionFactor(this.HIGH_DISTANCE_CONVERSION_FACTOR);
 		//Common.dashNum("conversion factor", encoderL.getPositionConversionFactor());
@@ -115,22 +118,22 @@ public class DriveTrain extends DifferentialDrive {
 	 * Function to init Motors
 	 */
 	private void initMotors() {
-		frontL.restoreFactoryDefaults();
-		frontR.restoreFactoryDefaults();
+		//frontL.restoreFactoryDefaults();
+		//frontR.restoreFactoryDefaults();
 		middleL.restoreFactoryDefaults();
 		middleR.restoreFactoryDefaults();
 		backL.restoreFactoryDefaults();
 		backR.restoreFactoryDefaults();
 
-		frontL.setSmartCurrentLimit(40);
-		frontR.setSmartCurrentLimit(40);
+		//frontL.setSmartCurrentLimit(40);
+		//frontR.setSmartCurrentLimit(40);
 		middleL.setSmartCurrentLimit(40);
 		middleR.setSmartCurrentLimit(40);
 		backL.setSmartCurrentLimit(40);
 		backR.setSmartCurrentLimit(40);
 
-		frontL.setIdleMode(IdleMode.kBrake);
-		frontR.setIdleMode(IdleMode.kBrake);
+		//frontL.setIdleMode(IdleMode.kBrake);
+		//frontR.setIdleMode(IdleMode.kBrake);
 		middleL.setIdleMode(IdleMode.kCoast);
 		middleR.setIdleMode(IdleMode.kCoast);
 		backL.setIdleMode(IdleMode.kCoast);
@@ -618,8 +621,11 @@ public class DriveTrain extends DifferentialDrive {
 		Common.dashStr("DT: state", getState().toString());
 		Common.dashBool("DT: complete", driveComp);
 		//Common.dashNum("drivePIDOUT", drive);
+		Common.dashNum("DT: Target Distance", drivePID.getTarget());
+		Common.dashNum("DT: Average Distance", getAverageDist());
 		arcadeDrive(driveAccelCurve(drive), turnAccelCurve(turn));
 		drivePID.update();
+		//vis.update();
 	}
 
 
