@@ -38,7 +38,7 @@ public class Climber{
         } else if (Robot.instance().cycleCount == 3) {
             updateRightCurrent();
         }
-        if (getLeftCurrent() > 5 || getRightCurrent() > 5)  {
+        if (getLeftCurrent() > 2.3 || getRightCurrent() > 5)  {
             locked = true;
         } 
         if (locked) {
@@ -54,6 +54,7 @@ public class Climber{
             setLeftPower(HOLDINGPOWER);
             setRightPower(HOLDINGPOWER);
         }
+        debug();
     }
 
     public void enableTeleop() {
@@ -171,6 +172,8 @@ public class Climber{
     }
 
     public void debug() {
+        Common.dashNum("CLMB: left curent", getLeftCurrent());
+        Common.dashNum("CLMB: right curent", getRightCurrent());
         Common.dashBool("CLMB: teleop mode", teleop);
         Common.dashBool("CLMB: locked", locked);
         Common.dashNum("CLMB: left draw", getLeftCurrent());

@@ -64,6 +64,7 @@ public class Common {
 		SmartDashboard.putNumber(title + ": ", a);
 	}
 	
+	
 	/**
 	 * Posts a double to the SmartDashboard
 	 * 

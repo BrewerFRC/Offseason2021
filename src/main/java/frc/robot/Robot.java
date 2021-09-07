@@ -200,8 +200,10 @@ class Robot extends TimedRobot {
     }
     if (driver.getPressed(Xbox.buttons.rightBumper) || operator.getPressed(buttons.rightBumper)) {
       dt.vis.ll.setLight(true);
+      shooter.hoodDown();
     } else {//if (driver.when(buttons.leftBumper) || operator.when(buttons.leftBumper)) {
       dt.vis.ll.setLight(false);
+      shooter.hoodUp();
     }
 
     if (driver.when(buttons.a)) {
@@ -215,7 +217,7 @@ class Robot extends TimedRobot {
     } else if (driver.when(buttons.dPadUp)) {
       auto.setAutoPath(paths.TRENCH_SHOOT);
     }
-    dt.update();
+    //dt.update();
     debug();
   }
   
